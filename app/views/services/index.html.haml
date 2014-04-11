@@ -21,7 +21,7 @@
       %td= link_to truncate(service.certificate.serial,length: 10), service.certificate
       %td{class: service.certificate.compromised ? 'danger' : 'success'}= service.certificate.compromised
       %td= service.current
-      %td{class: service.certificate.not_after.future? ? 'success' : 'danger' }= service.certificate.not_after.to_date
+      %td{class: class: service.certificate.expired? ? 'danger' : service.certificate.expires_soon? ? 'warning' : '' }= service.certificate.not_after.to_date
       %td= link_to 'Scan', scan_service_path(service)
       %td= link_to 'Show', service
       %td= link_to 'Edit', edit_service_path(service)
