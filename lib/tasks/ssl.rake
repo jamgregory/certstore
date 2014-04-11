@@ -51,8 +51,8 @@ namespace :ssl do
     keytext = STDIN.read.strip
     find_cert = Certificate.new(keytext: keytext)
     
-    cert = Certificate.find_by(keytext: find_cert.keytext)
-    raise "Could not find Certificate" unless cert
+    cert = Certificate.find_or_create_by(keytext: find_cert.keytext)
+    puts "Created unknown certificate #{cert.serial}" if cert.new_record?
     cert.compromised=true
     cert.save!
     puts "Marked certificate #{cert.serial} as compromised"
