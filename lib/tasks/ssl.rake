@@ -4,6 +4,7 @@ require 'ipaddress'
 require 'resolv'
 
 namespace :ssl do
+  
   desc "Scan a host:port for an SSL Certificate"
   task :scanhost, [:client] => [:environment] do |t, args|
     begin
@@ -44,6 +45,13 @@ namespace :ssl do
     puts "Created new Service" if service.new_record?
   end
   
+  desc "Rescan known hosts"
+  task rescan: :environment do
+    Service.all.each do |service| 
+      Rake::Task["ssl:scanhost"].reenable
+      Rake::Task["ssl:scanhost"].invoke "#{service.hostname}:#{service.port}"
+    end
+  end
   
   desc "Mark a certificate as compromised"
   task compromised: :environment do
