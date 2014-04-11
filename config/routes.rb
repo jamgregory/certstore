@@ -1,4 +1,5 @@
 Certstore::Application.routes.draw do
+  root to: 'certificates#index'
   resources :services
 
   resources :certificates
