@@ -27,14 +27,14 @@ namespace :ssl do
     begin
       ssl_socket = OpenSSL::SSL::SSLSocket.new socket
       ssl_socket.connect
-      peer_cert = ssl_socket.peer_cert
+      peer_cert = Certificate.new(keytext: ssl_socket.peer_cert.to_s)
       puts "Obtained certificate #{peer_cert.serial}"
     rescue => e
       raise "Could not obtain certificate from #{client}: #{e}"
     end
     
     begin
-      cert = Certificate.find_or_create_by(keytext: peer_cert.to_s)
+      cert = Certificate.find_or_create_by(keytext: peer_cert.keytext)
       puts "Created new Certificate" if cert.new_record?
       puts "Certificate serial: #{cert.serial}"
     rescue => e

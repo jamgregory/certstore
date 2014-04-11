@@ -1,6 +1,8 @@
 class Service < ActiveRecord::Base
   
-  default_scope { where current: true }
+  default_scope { where(current: true) }
+  
+  scope :all_except, ->(service) { where.not(id: service) }
   
   belongs_to :certificate
   
@@ -12,10 +14,10 @@ class Service < ActiveRecord::Base
   
   def service_is_current
     if current
-      services=Service.find_by(address: address, 
+      services=Service.all_except(self).where(address: address, 
                                hostname: hostname, 
                                port: port, 
-                               current: true).where.not(id: id)
+                               current: true)
       services.update_all(current: false)
     end
   end
