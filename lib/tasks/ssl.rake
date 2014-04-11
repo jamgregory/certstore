@@ -27,10 +27,7 @@ namespace :ssl do
   
   desc "Rescan known hosts"
   task rescan: :environment do
-    Service.all.each do |service| 
-      Rake::Task["ssl:scanhost"].reenable
-      Rake::Task["ssl:scanhost"].invoke "#{service.hostname}:#{service.port}"
-    end
+    Service.all.each {|service| service.scan }
   end
   
   desc "Mark a certificate as compromised"
