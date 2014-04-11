@@ -10,39 +10,19 @@ namespace :ssl do
     begin
       client=args[:client]
       host,port=client.split ':'
-      puts "Attempting to get certificate for #{host}:#{port}"
+      Rails.logger.info "Attempting to get certificate for #{host}:#{port}"
     rescue
       raise "Please supply host:port"
     end
     
-    begin
-      socket = TCPSocket.new host, port
-      hostname = IPAddress.valid?(host) ? Resolv.getname(host) : host
-      ipaddress = socket.remote_address.ip_address
-      numeric_port = port.to_i
-    rescue => e
-      raise "Could not connect to #{client}: #{e}"
+    hostname = IPAddress.valid?(host) ? Resolv.getname(host) : host
+    ipaddress = Resolv.getaddress hostname
+    numeric_port = port.to_i
+    service = Service.find_or_initialize_by({hostname: hostname, address: ipaddress, port: numeric_port, current: true})
+    if service.scan
+      service.save!
+      puts "Created new Service #{service}"
     end
-    
-    begin
-      ssl_socket = OpenSSL::SSL::SSLSocket.new socket
-      ssl_socket.connect
-      peer_cert = Certificate.new(keytext: ssl_socket.peer_cert.to_s)
-      puts "Obtained certificate #{peer_cert.serial}"
-    rescue => e
-      raise "Could not obtain certificate from #{client}: #{e}"
-    end
-    
-    begin
-      cert = Certificate.find_or_create_by(keytext: peer_cert.keytext)
-      puts "Created new Certificate" if cert.new_record?
-      puts "Certificate serial: #{cert.serial}"
-    rescue => e
-      raise "Could not create Certificate: #{e}"
-    end
-    
-    service = Service.find_or_create_by({hostname: hostname, address: ipaddress, port: numeric_port, certificate: cert, current: true})
-    puts "Created new Service" if service.new_record?
   end
   
   desc "Rescan known hosts"
