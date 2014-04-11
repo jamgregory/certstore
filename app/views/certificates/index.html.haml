@@ -1,0 +1,33 @@
+%h1 Listing certificates
+
+%table.table
+  %thead
+    %tr
+      %th.cn CN
+      %th.serial Serial
+      %th.compromised Compromised?
+      %th Not Before
+      %th Not After
+      %th Used By
+      %th 
+      %th
+      %th
+    %tr
+  %thead
+
+  %tbody
+    -@certificates.each do |c|
+      %tr
+        %td.cn= c.cn
+        %td.serial= link_to c.serial, c
+        %td.compromised= c.compromised
+        %td= c.not_before
+        %td= c.not_after
+        %td= c.services_using.length
+        %td= link_to 'Show', c
+        %td= link_to 'Edit', edit_certificate_path(c)
+        %td= link_to 'Destroy', c, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Certificate', new_certificate_path

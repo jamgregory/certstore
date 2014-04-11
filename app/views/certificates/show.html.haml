@@ -1,0 +1,53 @@
+%p#notice= notice
+
+%p
+  %strong CN:
+  %p= @certificate.cn
+
+%p
+  %strong SANs:
+  %ul 
+    - @certificate.subject_alt_names.each do |s|
+      %li= s.value
+      
+%p
+  %strong Compromised?:
+  %p= @certificate.compromised
+      
+%p
+  %strong Services using: 
+  %ul
+    - @certificate.services_using.each do |s|
+      %li= link_to "#{s.hostname}:#{s.port}", s
+
+%p
+  %strong Subject:
+  %p= @certificate.subject
+
+%p
+  %strong Keytext:
+  %pre= @certificate.keytext
+  
+%p
+  %strong Serial:
+  %p= @certificate.serial
+  
+%p
+  %strong Not Before:
+  %p= @certificate.not_before
+  
+%p
+  %strong Not After:
+  %p= @certificate.not_after
+
+%p
+  %strong Extensions
+  %ul
+  - @certificate.certificate.extensions.each do |extension|
+    %li
+      = "#{extension.oid} = #{extension.value}"
+  
+  
+= link_to 'Edit', edit_certificate_path(@certificate)
+|
+= link_to 'Back', certificates_path

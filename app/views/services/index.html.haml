@@ -1,0 +1,33 @@
+%h1 Listing services
+
+%table.table
+  %tr
+    %th Address
+    %th Hostname
+    %th Port
+    %th Certificate
+    %th Compromised?
+    %th Current
+    %th Added at
+    %th
+    %th
+    %th
+
+  - @services.each do |service|
+    %tr
+      %td= service.address
+      %td= service.hostname
+      %td= service.port
+      %td= link_to service.certificate.serial, service.certificate
+      %td
+        %span.label{class: service.certificate.compromised ? 'label-danger' : 'label-success' }
+          = service.certificate.compromised
+      %td= service.current
+      %td= service.created_at
+      %td= link_to 'Show', service
+      %td= link_to 'Edit', edit_service_path(service)
+      %td= link_to 'Destroy', service, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Service', new_service_path

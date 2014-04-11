@@ -1,0 +1,14 @@
+// Place all the styles related to the Certificates controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+td.serial {
+  font-family: monospace;
+}
+
+th.serial, td.serial {
+  width: 10em;
+}
+
+th.cn, td.cn {
+  width: 10em;
+}

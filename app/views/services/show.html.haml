@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Address:
+  = @service.address
+%p
+  %b Hostname:
+  = @service.hostname
+%p
+  %b Port:
+  = @service.port
+%p
+  %b Certificate:
+  = @service.certificate.serial
+%p
+  %b Current:
+  = @service.current
+
+= link_to 'Edit', edit_service_path(@service)
+\|
+= link_to 'Back', services_path
