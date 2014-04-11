@@ -1,10 +1,19 @@
 class ServicesController < ApplicationController
-  before_action :set_service, only: [:show, :edit, :update, :destroy]
+  before_action :set_service, only: [:show, :edit, :update, :destroy, :scan]
 
   # GET /services
   # GET /services.json
   def index
     @services = Service.all
+  end
+  
+  # GET /services/1/scan
+  def scan
+    if new_service=@service.scan
+      redirect_to new_service
+    else
+      redirect_to action: 'show'
+    end
   end
 
   # GET /services/1

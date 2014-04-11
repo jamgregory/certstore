@@ -1,6 +1,10 @@
 Certstore::Application.routes.draw do
   root to: 'certificates#index'
-  resources :services
+  resources :services do
+    member do
+      get 'scan'
+    end
+  end
 
   resources :certificates
 

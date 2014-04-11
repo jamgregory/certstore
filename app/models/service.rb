@@ -38,7 +38,7 @@ class Service < ActiveRecord::Base
         # We found a new certificate - create a new service for it
         new_service = self.dup 
         new_service.certificate = Certificate.find_or_create_by(keytext: peer_cert.keytext)
-        true
+        new_service
       else
         Rails.logger.debug "Unchanged certificate for #{hostname}:#{port}"
         false
