@@ -8,7 +8,7 @@
     %th Certificate
     %th Compromised?
     %th Current
-    %th Added at
+    %th Expires At
     %th
     %th
     %th
@@ -24,7 +24,7 @@
         %span.label{class: service.certificate.compromised ? 'label-danger' : 'label-success' }
           = service.certificate.compromised
       %td= service.current
-      %td= service.created_at
+      %td= service.certificate.not_after
       %td= link_to 'Scan', scan_service_path(service)
       %td= link_to 'Show', service
       %td= link_to 'Edit', edit_service_path(service)
