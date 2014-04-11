@@ -49,3 +49,4 @@ gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails', branc
 gem 'haml'
 gem 'haml-rails'
 gem 'ipaddress'
+gem 'therubyracer'
