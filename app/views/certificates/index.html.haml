@@ -16,7 +16,7 @@
 
   %tbody
     -@certificates.each do |c|
-      %tr
+      %tr{class: (c.in_use? ? 'active' : '') }
         %td.cn= c.cn
         %td.serial= link_to truncate(c.serial,length: 16), c
         %td.compromised= c.compromised

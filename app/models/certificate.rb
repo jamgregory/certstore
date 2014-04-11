@@ -82,4 +82,8 @@ class Certificate < ActiveRecord::Base
     not_after.past?
   end
   
+  def in_use?
+    services_using.length > 0
+  end
+  
 end
