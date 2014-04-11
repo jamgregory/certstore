@@ -17,7 +17,7 @@
         %a.navbar-brand Certstore
       .collapse.navbar-collapse
         %ul.nav.navbar-nav
-          %li= link_to Certificate
-          %li= link_to Service
+          %li= link_to "Certificates", { controller: 'certificates', action: 'index' }
+          %li= link_to "Services", { controller: 'services', action: 'index' }
   .container
     %div.starter-template= yield
