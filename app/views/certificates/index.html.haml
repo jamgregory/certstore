@@ -19,10 +19,10 @@
     -@certificates.each do |c|
       %tr
         %td.cn= c.cn
-        %td.serial= link_to c.serial, c
+        %td.serial= link_to truncate(c.serial,length: 16), c
         %td.compromised= c.compromised
-        %td= c.not_before
-        %td= c.not_after
+        %td= c.not_before.to_date
+        %td= c.not_after.to_date
         %td= c.services_using.length
         %td= link_to 'Show', c
         %td= link_to 'Edit', edit_certificate_path(c)
