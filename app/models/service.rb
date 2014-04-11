@@ -3,7 +3,7 @@ require 'openssl'
 
 class Service < ActiveRecord::Base
   
-  default_scope { where(current: true) }
+  default_scope { where(current: true).order(:hostname) }
   
   scope :all_except, ->(service) { where.not(id: service) }
   
@@ -36,12 +36,13 @@ class Service < ActiveRecord::Base
       if peer_cert.keytext != certificate.keytext
         Rails.logger.info "New certificate found for #{hostname}:#{port}: #{peer_cert.serial}"
         # We found a new certificate - create a new service for it
-        new_service = self.dup 
+        new_service = self.dup
         new_service.certificate = Certificate.find_or_create_by(keytext: peer_cert.keytext)
-        new_service
+        Rails.logger.debug "Returning new service #{new_service}"
+        return new_service.save
       else
         Rails.logger.debug "Unchanged certificate for #{hostname}:#{port}"
-        false
+        return false
       end
     rescue => e
       raise "Could not update certificate #{e}"

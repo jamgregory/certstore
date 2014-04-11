@@ -10,6 +10,7 @@ class ServicesController < ApplicationController
   # GET /services/1/scan
   def scan
     if new_service=@service.scan
+      Rails.logger.debug "Redirecting to new service"
       redirect_to new_service
     else
       redirect_to action: 'show'
