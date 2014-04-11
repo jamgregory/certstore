@@ -1,4 +1,7 @@
 class Service < ActiveRecord::Base
+  
+  default_scope { where current: true }
+  
   belongs_to :certificate
   
   validates :address, presence: true
