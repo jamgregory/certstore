@@ -19,7 +19,7 @@
       %tr{class: (c.in_use? ? 'active' : '') }
         %td.cn= c.cn
         %td.serial= link_to truncate(c.serial,length: 16), c
-        %td.compromised= c.compromised
+        %td{ class: c.compromised ? 'danger' : '' }= c.compromised
         %td{ class: (not c.not_before.past?) ? 'danger' : '' }= c.not_before.to_date
         %td{ class: c.expired? ? 'danger' : c.expires_soon? ? 'warning' : '' }= c.not_after.to_date
         %td= c.services_using.length
