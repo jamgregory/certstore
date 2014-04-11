@@ -74,4 +74,12 @@ class Certificate < ActiveRecord::Base
     Service.where(current: current, certificate: self)
   end
   
+  def expires_soon?
+    not_after < (Time.now+90.days)
+  end
+  
+  def expired?
+    not_after.past?
+  end
+  
 end
