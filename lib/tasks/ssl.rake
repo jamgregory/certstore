@@ -31,7 +31,7 @@ namespace :ssl do
       begin
         service.scan
       rescue
-        Rails.logger.warn "Failed scan for #{service.hostname}:#{service:port}"
+        Rails.logger.warn "Failed scan for #{service.hostname}:#{service.port}"
       end
     end
   end
