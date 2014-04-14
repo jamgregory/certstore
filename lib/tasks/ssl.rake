@@ -30,6 +30,7 @@ namespace :ssl do
     Service.all.each do |service|
       begin
         service.scan
+        Rails.logger.info "Scanned #{service.hostname}:#{service.port}"
       rescue
         Rails.logger.warn "Failed scan for #{service.hostname}:#{service.port}"
       end
