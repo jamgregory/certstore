@@ -27,7 +27,13 @@ namespace :ssl do
   
   desc "Rescan known hosts"
   task rescan: :environment do
-    Service.all.each {|service| service.scan }
+    Service.all.each do |service|
+      begin
+        service.scan
+      rescue
+        Rails.logger.warn "Failed scan for #{service.hostname}:#{service:port}"
+      end
+    end
   end
   
   desc "Mark a certificate as compromised"
@@ -37,10 +43,10 @@ namespace :ssl do
     find_cert = Certificate.new(keytext: keytext)
     
     cert = Certificate.find_or_create_by(keytext: find_cert.keytext)
-    puts "Created unknown certificate #{cert.serial}" if cert.new_record?
+    Rails.logger.info "Created unknown certificate #{cert.serial}" if cert.new_record?
     cert.compromised=true
     cert.save!
-    puts "Marked certificate #{cert.serial} as compromised"
+    Rails.logger.info "Marked certificate #{cert.serial} as compromised"
   end
 
 end
