@@ -19,7 +19,7 @@ class Certificate < ActiveRecord::Base
   end
   
   def certificate
-    OpenSSL::X509::Certificate.new(keytext)
+    keytext ? OpenSSL::X509::Certificate.new(keytext) : nil
   end
   
   def serial
