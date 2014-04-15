@@ -29,8 +29,10 @@ namespace :ssl do
   task rescan: :environment do
     Service.all.each do |service|
       begin
-        service.scan
-        Rails.logger.info "Scanned #{service.hostname}:#{service.port}"
+        Thread.new do
+          service.scan
+          Rails.logger.info "Scanned #{service.hostname}:#{service.port}"
+        end
       rescue
         Rails.logger.warn "Failed scan for #{service.hostname}:#{service.port}"
       end
