@@ -39,6 +39,7 @@ class Service < ActiveRecord::Base
           Rails.logger.info "New certificate found for #{hostname}:#{port}: #{peer_cert.serial}"
           # We found a new certificate - create a new service for it
           new_service = self.dup
+          new_service.current = true
           new_service.certificate = Certificate.find_or_create_by(keytext: peer_cert.keytext)
           Rails.logger.debug "Returning new service #{new_service}"
           return new_service.save
