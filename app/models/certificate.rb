@@ -23,23 +23,23 @@ class Certificate < ActiveRecord::Base
   end
   
   def serial
-    certificate.serial.to_s(16)
+    certificate ? certificate.serial.to_s(16) : ''
   end
   
   def not_before
-    certificate.not_before
+    certificate ? certificate.not_before : nil
   end
   
   def not_after
-    certificate.not_after
+    certificate ? certificate.not_after : nil
   end
   
   def issuer
-    certificate.issuer.to_s
+    certificate ? certificate.issuer.to_s : ''
   end
   
   def subject
-    certificate.subject.to_s
+    certificate ? certificate.subject.to_s : ''
   end
   
   def cn
@@ -57,6 +57,7 @@ class Certificate < ActiveRecord::Base
   end
   
   def subject_alt_names
+    return unless certificate
     san_exts = certificate.extensions.select do |e| 
       e.oid == 'subjectAltName'
     end
