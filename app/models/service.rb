@@ -5,7 +5,7 @@ require 'timeout'
 class Service < ActiveRecord::Base
   
   #default_scope { where(current: true).order(:hostname) }
-  scope :current, -> { (current: true) }
+  scope :current, -> { where(current: true) }
   scope :all_except, ->(service) { where.not(id: service) }
   
   belongs_to :certificate
