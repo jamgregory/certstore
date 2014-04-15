@@ -4,7 +4,7 @@ require 'timeout'
 
 class Service < ActiveRecord::Base
   
-  default_scope { where(current: true).order(:hostname) }
+  #default_scope { where(current: true).order(:hostname) }
   
   scope :all_except, ->(service) { where.not(id: service) }
   
