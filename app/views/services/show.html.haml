@@ -11,7 +11,7 @@
   = @service.port
 %p
   %b Certificate:
-  = @service.certificate.serial
+  = @service.certificate ? @service.certificate.serial : ''
 %p
   %b Current:
   = @service.current
