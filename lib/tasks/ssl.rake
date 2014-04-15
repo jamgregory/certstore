@@ -19,9 +19,11 @@ namespace :ssl do
     ipaddress = Resolv.getaddress hostname
     numeric_port = port.to_i
     service = Service.find_or_initialize_by({hostname: hostname, address: ipaddress, port: numeric_port, current: true})
-    if service.scan
-      service.save!
-      puts "Created new Service #{service}"
+    Thread.new do
+      if service.scan
+        service.save!
+        puts "Created new Service #{service}"
+      end
     end
   end
   
