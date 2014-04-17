@@ -4,6 +4,23 @@ require 'timeout'
 
 class Service < ActiveRecord::Base
   
+  class ScanJob
+    @queue = :service_scan
+    
+    def self.perform(host, port)
+      hostname = IPAddress.valid?(host) ? Resolv.getname(host) : host
+      ipaddress = Resolv.getaddress hostname
+      numeric_port = port.to_i
+      service = Service.find_or_initialize_by({hostname: hostname, address: ipaddress, port: numeric_port, current: true})
+      Rails.logger.info "Scan started for #{host}:#{port}"
+      if service.scan
+        service.save!
+        Rails.logger.info "Created new Service #{service}"
+      end
+      Rails.logger.debug "Scan finished for #{host}:#{port}"
+    end
+  end
+
   default_scope { order(:hostname) }
   scope :current, -> { where(current: true) }
   scope :all_except, ->(service) { where.not(id: service) }
@@ -55,3 +72,5 @@ class Service < ActiveRecord::Base
   end
   
 end
+
+

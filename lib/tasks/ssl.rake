@@ -2,6 +2,7 @@ require 'socket'
 require 'openssl'
 require 'ipaddress'
 require 'resolv'
+require 'resque'
 
 namespace :ssl do
   
@@ -15,29 +16,16 @@ namespace :ssl do
       raise "Please supply host:port"
     end
     
-    hostname = IPAddress.valid?(host) ? Resolv.getname(host) : host
-    ipaddress = Resolv.getaddress hostname
-    numeric_port = port.to_i
-    service = Service.find_or_initialize_by({hostname: hostname, address: ipaddress, port: numeric_port, current: true})
-    Thread.new do
-      if service.scan
-        service.save!
-        puts "Created new Service #{service}"
-      end
-    end
+    Rails.logger.debug "Queuing ScanJob task for #{host}:#{port}"
+    Resque.enqueue(Service::ScanJob,host,port)
+    Rails.logger.debug "Job queued"
+
   end
   
   desc "Rescan known hosts"
   task rescan: :environment do
-    Service.all.each do |service|
-      begin
-        Thread.new do
-          service.scan
-          Rails.logger.info "Scanned #{service.hostname}:#{service.port}"
-        end
-      rescue
-        Rails.logger.warn "Failed scan for #{service.hostname}:#{service.port}"
-      end
+    Service.current.each do |service|
+      Resque.enqueue(Service::ScanJob, service.hostname, service.port)
     end
   end
   
