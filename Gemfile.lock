@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/rweng/jquery-datatables-rails.git
+  revision: 788a7b24caf8fe58a5493aa3f6a065879a9f752a
+  specs:
+    jquery-datatables-rails (1.12.2)
+      jquery-rails
+      sass-rails
+
+GIT
   remote: git://github.com/seyhunak/twitter-bootstrap-rails.git
   revision: c79ba5c0430b056474be3b13f2619005685a86e9
   branch: bootstrap3
@@ -159,6 +167,7 @@ DEPENDENCIES
   haml-rails
   ipaddress
   jbuilder (~> 1.2)
+  jquery-datatables-rails!
   jquery-rails
   rails (= 4.1.0)
   resque

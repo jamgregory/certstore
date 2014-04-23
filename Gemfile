@@ -51,3 +51,5 @@ gem 'haml-rails'
 gem 'ipaddress'
 gem 'therubyracer'
 gem 'resque'
+
+gem 'jquery-datatables-rails', git: 'git://github.com/rweng/jquery-datatables-rails.git'

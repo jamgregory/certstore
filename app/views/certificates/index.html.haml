@@ -1,18 +1,15 @@
 %h1 Listing certificates
 
-%table.table
+%table.table.datatable
   %thead
-    %tr
-      %th.cn CN
-      %th.serial Serial
-      %th.compromised Compromised?
-      %th Not Before
-      %th Not After
-      %th Used By
-      %th 
-      %th
-    %tr
-  %thead
+    %th.cn CN
+    %th.serial Serial
+    %th.compromised Compromised?
+    %th Not Before
+    %th Not After
+    %th Used By
+    %th 
+    %th
 
   %tbody
     -@certificates.each do |c|
