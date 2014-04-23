@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140411072241) do
+ActiveRecord::Schema.define(version: 20140423115149) do
 
   create_table "certificates", force: true do |t|
     t.string   "keytext"
@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 20140411072241) do
     t.boolean  "current"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "retired",        default: false
   end
 
   add_index "services", ["certificate_id"], name: "index_services_on_certificate_id"
