@@ -1,4 +1,5 @@
 require 'openssl'
+require 'digest/md5'
 
 class Certificate < ActiveRecord::Base
   validates :keytext, uniqueness: true
@@ -16,6 +17,10 @@ class Certificate < ActiveRecord::Base
   def keytext= keytext
     # do a bit of tidying up, remove superfluous whitespace
     write_attribute(:keytext,keytext.strip.split("\n").map {|line| line.rstrip}.join("\n")).gsub /^$\n/,''
+  end
+  
+  def fingerprint
+    keytext ? Digest::MD5.hexdigest(OpenSSL::X509::Certificate.new(keytext).to_der) : ''
   end
   
   def certificate
