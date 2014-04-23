@@ -15,6 +15,9 @@
 %p
   %b Current:
   = @service.current
+%p
+  %b Retired:
+  = @service.retired
 
 = link_to 'Edit', edit_service_path(@service)
 \|

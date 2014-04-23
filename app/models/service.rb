@@ -23,6 +23,7 @@ class Service < ActiveRecord::Base
 
   default_scope { order(:hostname) }
   scope :current, -> { where(current: true) }
+  scope :current_not_retired, -> { where(current: true, retired: false) }
   scope :all_except, ->(service) { where.not(id: service) }
   
   belongs_to :certificate

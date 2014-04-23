@@ -4,12 +4,17 @@ class ServicesController < ApplicationController
   # GET /services
   # GET /services.json
   def index
-    @services = Service.current
+    @services = Service.current_not_retired
   end
   
   # GET /services/1/scan
   def scan
-    if new_service=@service.scan
+    if @service.scan
+      new_service=Service.find_by(hostname: @service.hostname, 
+                               address: @service.address, 
+                               port: @service.port, 
+                               retired: @service.retired, 
+                               current: true)
       Rails.logger.debug "Redirecting to new service"
       redirect_to new_service
     else
@@ -79,6 +84,6 @@ class ServicesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def service_params
-      params.require(:service).permit(:address, :hostname, :port, :certificate_id, :current)
+      params.require(:service).permit(:address, :hostname, :port, :certificate_id, :current, :retired)
     end
 end
