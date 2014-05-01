@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140424123057) do
+ActiveRecord::Schema.define(version: 20140501110830) do
 
   create_table "certificates", force: true do |t|
-    t.string   "keytext"
+    t.text     "keytext",     limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "compromised", default: false
+    t.boolean  "compromised",             default: false
   end
 
   add_index "certificates", ["keytext"], name: "index_certificates_on_keytext", unique: true
