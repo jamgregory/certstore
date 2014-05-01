@@ -17,15 +17,16 @@ namespace :ssl do
     end
     
     Rails.logger.debug "Queuing ScanJob task for #{host}:#{port}"
-    Resque.enqueue(Service::ScanJob,host,port)
+    Resque.enqueue(Scan::ScanJob,host,port)
     Rails.logger.debug "Job queued"
 
   end
   
   desc "Rescan known hosts"
   task rescan: :environment do
-    Service.current.each do |service|
-      Resque.enqueue(Service::ScanJob, service.hostname, service.port)
+    Service.not_retired.each do |service|
+      Scan.create(service: service, state: :waiting, message: 'Waiting to be scanned')
+      Resque.enqueue(Scan::ScanJob, service.id)
     end
   end
   

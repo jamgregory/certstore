@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
   # GET /services
   # GET /services.json
   def index
-    @services = Service.current_not_retired
+    @services = Service.not_retired
   end
   
   # GET /services/1/scan
@@ -13,8 +13,7 @@ class ServicesController < ApplicationController
       new_service=Service.find_by(hostname: @service.hostname, 
                                address: @service.address, 
                                port: @service.port, 
-                               retired: @service.retired, 
-                               current: true)
+                               retired: @service.retired)
       Rails.logger.debug "Redirecting to new service"
       redirect_to new_service
     else

@@ -1,0 +1,17 @@
+%h1 Listing Job Queues
+
+%table.table.datatable
+  %thead
+    %th.queue queue
+    %th.args Serial
+    %th
+
+  %tbody
+    -@job_queues.each do |q|
+      -q.jobs.each do |j|
+        %tr
+          %td.queue= j.queue.name
+          %td.args= j.args.to_s
+          %td= link_to 'Destroy', job_path(j)
+
+%br

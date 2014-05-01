@@ -7,6 +7,9 @@ Certstore::Application.routes.draw do
   end
 
   resources :certificates
+  
+  resources :job_queues, only: [:index]
+  resources :jobs, only: [:destroy]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

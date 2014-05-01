@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  service_id: 
+  certificate_id: 
+  state: MyString
+  message: MyString
+
+two:
+  service_id: 
+  certificate_id: 
+  state: MyString
+  message: MyString

@@ -12,12 +12,24 @@
 %p
   %b Certificate:
   = @service.certificate ? @service.certificate.serial : ''
-%p
-  %b Current:
-  = @service.current
+
 %p
   %b Retired:
   = @service.retired
+  
+%table.table.datatable
+  %thead
+    %th Time
+    %th Certificate
+    %th State
+    %th Message
+
+  - @service.scans.each do |scan|
+    %tr
+      %td= scan.updated_at
+      %td= scan.certificate ? scan.certificate.serial : 'No Certificate Found'
+      %td= scan.state
+      %td= scan.message
 
 = link_to 'Edit', edit_service_path(@service)
 \|

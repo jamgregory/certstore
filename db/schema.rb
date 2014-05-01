@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140423115149) do
+ActiveRecord::Schema.define(version: 20140424123057) do
 
   create_table "certificates", force: true do |t|
     t.string   "keytext"
@@ -22,17 +22,26 @@ ActiveRecord::Schema.define(version: 20140423115149) do
 
   add_index "certificates", ["keytext"], name: "index_certificates_on_keytext", unique: true
 
+  create_table "scans", force: true do |t|
+    t.integer  "service_id"
+    t.integer  "certificate_id"
+    t.string   "state"
+    t.string   "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "scans", ["certificate_id"], name: "index_scans_on_certificate_id"
+  add_index "scans", ["service_id"], name: "index_scans_on_service_id"
+
   create_table "services", force: true do |t|
     t.string   "address"
     t.string   "hostname"
     t.integer  "port"
-    t.integer  "certificate_id"
     t.boolean  "current"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "retired",        default: false
+    t.boolean  "retired",    default: false
   end
-
-  add_index "services", ["certificate_id"], name: "index_services_on_certificate_id"
 
 end

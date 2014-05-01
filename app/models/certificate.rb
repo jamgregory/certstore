@@ -6,6 +6,8 @@ class Certificate < ActiveRecord::Base
   validates :keytext, presence: true
   validate :validate_x509_certificate
     
+  has_many :scans
+  
   def validate_x509_certificate
     begin
       OpenSSL::X509::Certificate.new keytext
@@ -76,8 +78,9 @@ class Certificate < ActiveRecord::Base
     sans.flatten
   end
   
-  def services_using current=true
-    Service.where(current: current, certificate: self)
+  def services_using
+    scans_for_cert = scans.select(:service_id).distinct.reject {|scan| scan.service.last_scan and scan.service.last_scan.certificate_id != id }
+    scans_for_cert.map { |scan| scan.service }
   end
   
   def expires_soon?
