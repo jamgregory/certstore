@@ -13,7 +13,7 @@ class Service < ActiveRecord::Base
   default_scope { order(:hostname) }
   scope :current, -> { where(current: true) }
   scope :current_not_retired, -> { where(current: true, retired: false) }
-  scope :not_retired, ->(state = :completed) { includes(:scans).joins(:scans).where("scans.state = '#{state}'").order("scans.created_at DESC").group("services.id").where(retired: false) }
+  scope :not_retired, ->(state = :completed) { includes(:scans).joins(:scans).where("scans.state = '#{state}'").order("scans.created_at DESC").distinct("services.id").where(retired: false) }
   scope :all_except, ->(service) { where.not(id: service) }
     
   validates :address, presence: true
