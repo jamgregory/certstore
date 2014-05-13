@@ -21,8 +21,6 @@ class Service < ActiveRecord::Base
   validates :port, presence: true
   
   def last_scan(state = :completed)
-    # state ? scans.where(state: state).order(:updated_at).last : scans.order(:updated_at).last
-    #scans.to_a.select { |scan| scan.state == state }.max_by(&:updated_at)
     scans.last
   end
   
