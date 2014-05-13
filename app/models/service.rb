@@ -13,7 +13,7 @@ class Service < ActiveRecord::Base
   default_scope { order(:hostname) }
   scope :current, -> { where(current: true) }
   scope :current_not_retired, -> { where(current: true, retired: false) }
-  scope :not_retired, -> { where(retired: false) }
+  scope :not_retired, ->(state = :completed) { includes(:scans).joins(:scans).where("scans.state = '#{state}'").order("scans.created_at DESC").group("scans.service_id").where(retired: false) }
   scope :all_except, ->(service) { where.not(id: service) }
     
   validates :address, presence: true
@@ -21,7 +21,9 @@ class Service < ActiveRecord::Base
   validates :port, presence: true
   
   def last_scan(state = :completed)
-    scans.where(state: state).order(:updated_at).last
+    # state ? scans.where(state: state).order(:updated_at).last : scans.order(:updated_at).last
+    #scans.to_a.select { |scan| scan.state == state }.max_by(&:updated_at)
+    scans.last
   end
   
   def certificate
