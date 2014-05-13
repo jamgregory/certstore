@@ -8,6 +8,8 @@ class Certificate < ActiveRecord::Base
     
   has_many :scans
   
+  scope :current_services, -> { includes(:scans).joins(:scans).includes(scans: :service).joins(scans: :service).joins(scans: { service: :scans }).order("scans_services.created_at DESC").group("scans_services.service_id").where("scans_services.certificate_id = certificates.id") }
+    
   def validate_x509_certificate
     begin
       OpenSSL::X509::Certificate.new keytext
@@ -78,9 +80,9 @@ class Certificate < ActiveRecord::Base
     sans.flatten
   end
   
-  def services_using
-    scans_for_cert = scans.select(:service_id).distinct.reject {|scan| scan.service.last_scan and scan.service.last_scan.certificate_id != id }
-    scans_for_cert.map { |scan| scan.service }
+  def services_using    
+    #scans_for_cert = Service.not_retired.where(id: scans.map{|x| x.service_id})
+    scans.map {|x| x.service}
   end
   
   def expires_soon?

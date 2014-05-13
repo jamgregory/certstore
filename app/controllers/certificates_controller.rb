@@ -4,7 +4,7 @@ class CertificatesController < ApplicationController
   # GET /certificates
   # GET /certificates.json
   def index
-    @certificates = Certificate.all
+    @certificates = Certificate.current_services
   end
 
   # GET /certificates/1
@@ -64,7 +64,7 @@ class CertificatesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_certificate
-      @certificate = Certificate.find(params[:id])
+      @certificate = Certificate.current_services.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
