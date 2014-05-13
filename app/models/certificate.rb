@@ -8,7 +8,7 @@ class Certificate < ActiveRecord::Base
     
   has_many :scans
   
-  scope :current_services, -> { includes(:scans).joins(:scans).includes(scans: :service).joins(scans: :service).joins(scans: { service: :scans }).order("scans_services.created_at DESC").group("scans.id,certificates.id,services.id,scans_services.service_id").where("scans_services.certificate_id = certificates.id") }
+  scope :current_services, -> { includes(:scans).joins(:scans).includes(scans: :service).joins(scans: :service).joins(scans: { service: :scans }).order("scans_services.created_at DESC").group("scans.id,certificates.id,services.id,scans_services.created_at,scans_services.service_id").where("scans_services.certificate_id = certificates.id") }
     
   def validate_x509_certificate
     begin
